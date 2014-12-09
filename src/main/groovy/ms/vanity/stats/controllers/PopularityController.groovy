@@ -16,13 +16,13 @@ class PopularityController {
     private PopularityService service
 
     @RequestMapping(value = "/tags", method = GET)
-    public def getTopTags(@RequestParam final Long timestamp, @RequestParam final Integer max) {
-        return service.findPopularTags(new Date(timestamp), max)
+    public def getTopTags(@RequestParam final Long timestamp, @RequestParam final Integer page, @RequestParam final Integer size) {
+        return service.findPopularTags(new Date(timestamp), page, size)
     }
 
     @RequestMapping(value = "/articles", method = GET)
-    public def getTopArticles(@RequestParam final Long timestamp, @RequestParam final Integer max) {
-        return service.findPopularArticles(new Date(timestamp), max)
+    public def getTopArticles(@RequestParam final Long timestamp, @RequestParam final Integer page, @RequestParam final Integer size) {
+        return service.findPopularArticles(new Date(timestamp), page, size)
     }
 
 }
