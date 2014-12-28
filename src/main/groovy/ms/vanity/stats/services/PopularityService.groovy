@@ -1,5 +1,6 @@
 package ms.vanity.stats.services
 
+import ms.vanity.stats.dto.PageableResult
 import ms.vanity.stats.repositores.ArticlePopularityRepository
 import ms.vanity.stats.repositores.TagPopularityRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,12 +22,16 @@ class PopularityService {
     private Integer defaultMaxPositions
 
     @Transactional(readOnly = true)
-    public List<Map<String, ?>> findPopularTags(final Date date, final Integer page = 0, final Integer size = null) {
-        tagPopularityRepository.findPopularTags(date.clearTime(), new PageRequest(page, size ?: defaultMaxPositions))
+    public PageableResult findPopularTags(final Date from, final Integer page = 0, final Integer size = defaultMaxPositions) {
+        Integer total = tagPopularityRepository.count(from)
+        List<Map<String, ?>> pageResult = tagPopularityRepository.find(from, new PageRequest(page, size))
+        return new PageableResult(total, pageResult)
     }
 
     @Transactional(readOnly = true)
-    public List<Map<String, ?>> findPopularArticles(final Date date, final Integer page = 0, final Integer size = null) {
-        articlePopularityRepository.findPopularArticles(date.clearTime(), new PageRequest(page, size ?: defaultMaxPositions))
+    public PageableResult findPopularArticles(final Date from, final Integer page = 0, final Integer size = defaultMaxPositions) {
+        Integer total = articlePopularityRepository.count(from)
+        List<Map<String, ?>> pageResult = articlePopularityRepository.find(from, new PageRequest(page, size))
+        return new PageableResult(total, pageResult)
     }
 }

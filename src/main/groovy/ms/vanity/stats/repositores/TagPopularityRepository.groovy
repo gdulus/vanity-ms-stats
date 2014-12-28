@@ -8,6 +8,9 @@ import org.springframework.data.repository.Repository
 interface TagPopularityRepository extends Repository<TagPopularity, Long> {
 
     @Query("select new map(tagId as id, max(rank) as rank) from TagPopularity where day >= ?1 group by tagId order by max(rank) desc")
-    public List<Map<String, ?>> findPopularTags(Date day, Pageable pageable)
+    public List<Map<String, ?>> find(Date day, Pageable pageable)
+
+    @Query("select count(distinct tagId) from TagPopularity where day >= ?1")
+    public Integer count(Date day)
 
 }
